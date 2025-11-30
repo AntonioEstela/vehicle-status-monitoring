@@ -9,6 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
       - run: terraform init
+        working-directory: ./terraform
       - run: terraform plan
         working-directory: ./terraform
         env:
@@ -22,6 +23,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
       - run: terraform init
+        working-directory: ./terraform
       - run: terraform apply -auto-approve
         working-directory: ./terraform
         env:
