@@ -27,7 +27,7 @@ resource "aws_api_gateway_integration" "vehicle_lambda" {
   uri                     = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.vehicle_status.arn}/invocations"
 
   request_templates = {
-    "application/json" = "$input.body"
+    "application/json" = "$util.escapeJavaScript($input.body)"
   }
 }
 
