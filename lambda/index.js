@@ -19,7 +19,7 @@ const sendEmailNotification = () => {
   const sesClient = new SESClient({ region: 'sa-east-1' });
   const params = {
     Destination: {
-      ToAddresses: ['antonioestela@gmail.com'],
+      ToAddresses: ['antonioestela73@gmail.com'],
     },
     Message: {
       Body: {
@@ -27,7 +27,7 @@ const sendEmailNotification = () => {
       },
       Subject: { Data: 'Emergency Alert' },
     },
-    Source: 'antonioestela@gmail.com',
+    Source: 'antonioestela73@gmail.com',
   };
 
   const command = new SendEmailCommand(params);
