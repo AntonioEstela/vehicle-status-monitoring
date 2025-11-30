@@ -1,5 +1,9 @@
 terraform {
-  backend "s3" {}
+  backend "s3" {
+    bucket = "vehicle-status-monitoring-terraform-state"
+    key    = "global/s3/terraform.tfstate"
+    region = "sa-east-1"
+  }
 
   required_providers {
     aws = {
