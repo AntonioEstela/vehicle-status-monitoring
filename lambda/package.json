@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild index.js --bundle --minify --platform=node --target=node20 --external:aws-sdk --outfile=../terraform/dist/index.js",
+    "build": "esbuild index.js --bundle --minify --platform=node --target=node20 --outfile=../terraform/dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Antonio Estela",
@@ -16,5 +16,8 @@
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",
     "esbuild": "^0.27.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-ses": "^3.940.0"
   }
 }
