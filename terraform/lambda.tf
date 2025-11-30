@@ -30,6 +30,11 @@ resource "aws_lambda_function" "vehicle_status" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 }
 
+resource "aws_cloudwatch_log_group" "vehicle_status" {
+  name              = "/aws/lambda/${aws_lambda_function.vehicle_status.function_name}"
+  retention_in_days = 14
+}
+
 resource "aws_lambda_permission" "apigateway_invoke" {
   statement_id  = "AllowAPIGatewayInvoke"
   action        = "lambda:InvokeFunction"
