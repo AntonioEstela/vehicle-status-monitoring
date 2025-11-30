@@ -27,6 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Download previous Terraform state (if any)
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-state
+          path: terraform
+          if-no-artifact-found: ignore
       - name: Download Lambda bundle
         uses: actions/download-artifact@v4
         with:
@@ -47,3 +53,8 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Upload Terraform state
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-state
+          path: terraform/terraform.tfstate

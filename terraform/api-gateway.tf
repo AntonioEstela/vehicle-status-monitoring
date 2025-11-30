@@ -1,3 +1,5 @@
+data "aws_region" "current" {}
+
 resource "aws_api_gateway_rest_api" "vehicle_api" {
   name = "vehicle-status-api"
 }
@@ -15,26 +17,16 @@ resource "aws_api_gateway_method" "vehicle_post" {
   http_method   = "POST"
   authorization = "NONE"
 }
+
 resource "aws_api_gateway_integration" "vehicle_lambda" {
-  rest_api_id             = aws_api_gateway_rest_api.vehicle_api.id
-  resource_id             = aws_api_gateway_resource.vehicle.id
-  http_method             = aws_api_gateway_method.vehicle_post.http_method
-  type                    = "AWS_PROXY"
+  rest_api_id = aws_api_gateway_rest_api.vehicle_api.id
+  resource_id = aws_api_gateway_resource.vehicle.id
+  http_method = aws_api_gateway_method.vehicle_post.http_method
+  type        = "AWS_PROXY"
   integration_http_method = "POST"
-  uri                     = aws_lambda_function.vehicle_status.arn
+  uri         = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.vehicle_status.arn}/invocations"
 }
-resource "aws_api_gateway_method_response" "vehicle_post_response" {
-  rest_api_id = aws_api_gateway_rest_api.vehicle_api.id
-  resource_id = aws_api_gateway_resource.vehicle.id
-  http_method = aws_api_gateway_method.vehicle_post.http_method
-  status_code = "200"
-}
-resource "aws_api_gateway_integration_response" "vehicle_lambda_response" {
-  rest_api_id = aws_api_gateway_rest_api.vehicle_api.id
-  resource_id = aws_api_gateway_resource.vehicle.id
-  http_method = aws_api_gateway_method.vehicle_post.http_method
-  status_code = aws_api_gateway_method_response.vehicle_post_response.status_code
-}
+
 resource "aws_api_gateway_resource" "health" {
   rest_api_id = aws_api_gateway_rest_api.vehicle_api.id
   parent_id   = aws_api_gateway_rest_api.vehicle_api.root_resource_id
@@ -87,6 +79,7 @@ resource "aws_api_gateway_deployment" "vehicle" {
   rest_api_id = aws_api_gateway_rest_api.vehicle_api.id
 
   depends_on = [
+    aws_api_gateway_integration.vehicle_lambda,
     aws_api_gateway_integration_response.health_mock_ok,
   ]
 }

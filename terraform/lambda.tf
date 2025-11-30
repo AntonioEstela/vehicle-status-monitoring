@@ -29,3 +29,11 @@ resource "aws_lambda_function" "vehicle_status" {
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
 }
+
+resource "aws_lambda_permission" "apigateway_invoke" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.vehicle_status.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.vehicle_api.execution_arn}/*/*"
+}
