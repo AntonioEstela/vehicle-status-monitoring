@@ -29,8 +29,8 @@ resource "aws_iam_role_policy" "lambda_ses_send" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "ses:SendEmail",
           "ses:SendRawEmail"
         ]
@@ -47,6 +47,8 @@ resource "aws_lambda_function" "vehicle_status" {
   role             = aws_iam_role.lambda_role.arn
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+
+  reserved_concurrent_executions = 10
 }
 
 resource "aws_cloudwatch_log_group" "vehicle_status" {
