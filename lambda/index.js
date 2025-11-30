@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
 export const handler = (event, _context, callback) => {
   // For API Gateway proxy, the request body is available in event.body.
@@ -16,29 +16,28 @@ export const handler = (event, _context, callback) => {
 };
 
 const sendEmailNotification = () => {
-  // Logic to send email notification
-  console.log('Emergency detected! Sending email notification...');
-
-  const ses = new AWS.SES();
-
+  const sesClient = new SESClient({ region: 'sa-east-1' });
   const params = {
     Destination: {
-      ToAddresses: ['antonioestela73@gmail.com'],
+      ToAddresses: ['antonioestela@gmail.com'],
     },
     Message: {
       Body: {
-        Text: { Data: 'Emergency detected! Please take immediate action.' },
+        Text: { Data: 'Emergency detected!' },
       },
       Subject: { Data: 'Emergency Alert' },
     },
-    Source: 'antonioestela73@gmail.com',
+    Source: 'antonioestela@gmail.com',
   };
 
-  ses.sendEmail(params, (err, data) => {
-    if (err) {
-      console.error('Error sending email:', err);
-    } else {
-      console.log('Email sent:', data);
+  const command = new SendEmailCommand(params);
+
+  sesClient.send(command).then(
+    (data) => {
+      console.log('Email sent!', data);
+    },
+    (err) => {
+      console.error(err, err.stack);
     }
-  });
+  );
 };
