@@ -4,7 +4,27 @@ on:
   workflow_dispatch:
 
 jobs:
+  lambda-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        working-directory: ./lambda
+        run: npm install
+      - name: Build Lambda function
+        working-directory: ./lambda
+        run: npm run build
+      - name: Upload Lambda bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-dist
+          path: terraform/dist/index.js
   destroy:
+    needs: lambda-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
