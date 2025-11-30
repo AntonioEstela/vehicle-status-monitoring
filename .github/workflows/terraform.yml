@@ -3,7 +3,7 @@ on:
   push:
   workflow_dispatch:
 jobs:
-  lambda-build:
+  lambda-build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -17,10 +17,6 @@ jobs:
       - name: Build Lambda function
         working-directory: ./lambda
         run: npm run build
-  deploy:
-    needs: lambda-build
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
       - run: ls -la
