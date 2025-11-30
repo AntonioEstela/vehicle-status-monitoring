@@ -10,7 +10,7 @@ export const handler = (event, _context, callback) => {
   }
   const response = {
     statusCode: 200,
-    body: JSON.stringify({ message: `Hello, ${name || 'World'}!` }),
+    body: JSON.stringify({ message: `Processed` }),
   };
   callback(null, response);
 };
