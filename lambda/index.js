@@ -1,5 +1,6 @@
 export const handler = (event, _context, callback) => {
-  const eventParsed = typeof event === 'string' ? JSON.parse(event || '{}') : event || {};
+  // For API Gateway proxy, the request body is available in event.body.
+  const eventParsed = typeof event?.body === 'string' ? JSON.parse(event.body || '{}') : event?.body || {};
 
   const { name } = eventParsed;
   console.log('payload:', eventParsed);
