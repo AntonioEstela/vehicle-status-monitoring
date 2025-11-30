@@ -10,11 +10,13 @@ export const handler = (event, _context, callback) => {
       body: JSON.stringify({ message: 'Invalid request' }),
     };
     callback(null, response);
+    return;
   }
 
   if (type === 'Emergency') {
     sendEmailNotification(vehicle_plate, coordinates);
   }
+
   const response = {
     statusCode: 200,
     body: JSON.stringify({ message: `Processed` }),
