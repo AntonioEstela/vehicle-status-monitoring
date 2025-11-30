@@ -1,12 +1,19 @@
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
 
 export const handler = (event, _context, callback) => {
-  // For API Gateway proxy, the request body is available in event.body.
   const eventParsed = typeof event?.body === 'string' ? JSON.parse(event.body || '{}') : event?.body || {};
+  const { type, vehicle_plate, coordinates } = eventParsed;
 
-  const { type } = eventParsed;
+  if (!type || !vehicle_plate || !coordinates) {
+    const response = {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'Invalid request' }),
+    };
+    callback(null, response);
+  }
+
   if (type === 'Emergency') {
-    sendEmailNotification();
+    sendEmailNotification(vehicle_plate, coordinates);
   }
   const response = {
     statusCode: 200,
@@ -15,7 +22,7 @@ export const handler = (event, _context, callback) => {
   callback(null, response);
 };
 
-const sendEmailNotification = () => {
+const sendEmailNotification = (vehicle_plate, coordinates) => {
   const sesClient = new SESClient({ region: 'sa-east-1' });
   const params = {
     Destination: {
@@ -23,9 +30,13 @@ const sendEmailNotification = () => {
     },
     Message: {
       Body: {
-        Text: { Data: 'Emergency detected!' },
+        Text: {
+          Data: `An emergency has been reported for vehicle ${vehicle_plate} at coordinates: ${JSON.stringify(
+            coordinates
+          )}`,
+        },
       },
-      Subject: { Data: 'Emergency Alert' },
+      Subject: { Data: `🚨 Emergency Alert for Vehicle ${vehicle_plate} 🚨` },
     },
     Source: 'antonioestela73@gmail.com',
   };
