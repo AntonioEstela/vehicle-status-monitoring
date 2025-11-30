@@ -23,6 +23,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: hashicorp/setup-terraform@v3
+      - run: ls -la
+        working-directory: ./terraform
       - run: terraform init
         working-directory: ./terraform
       - run: terraform plan
