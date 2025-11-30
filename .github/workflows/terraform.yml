@@ -17,7 +17,8 @@ jobs:
       - name: Build Lambda function
         working-directory: ./lambda
         run: npm run build
-  plan:
+  deploy:
+    needs: lambda-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
