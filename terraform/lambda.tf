@@ -59,13 +59,14 @@ resource "aws_iam_role_policy" "lambda_sns_publish" {
 }
 
 resource "aws_lambda_function" "vehicle_status" {
-  function_name    = "vehicle_status_function"
-  handler          = "index.handler"
-  runtime          = "nodejs22.x"
-  role             = aws_iam_role.lambda_role.arn
-  filename         = data.archive_file.lambda_zip.output_path
-  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  memory_size      = 1024
+  function_name                  = "vehicle_status_function"
+  handler                        = "index.handler"
+  runtime                        = "nodejs22.x"
+  role                           = aws_iam_role.lambda_role.arn
+  filename                       = data.archive_file.lambda_zip.output_path
+  source_code_hash               = data.archive_file.lambda_zip.output_base64sha256
+  memory_size                    = 1024
+  reserved_concurrent_executions = 10
 }
 
 resource "aws_cloudwatch_log_group" "vehicle_status" {
