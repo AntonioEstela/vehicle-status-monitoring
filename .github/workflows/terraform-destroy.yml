@@ -49,6 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: emergency-lambda-dist
+          path: terraform/dist
       - run: terraform init
         working-directory: ./terraform
         env:
