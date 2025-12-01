@@ -12,22 +12,39 @@ jobs:
         with:
           node-version: '20'
       - name: Install dependencies
-        working-directory: ./lambda
+        working-directory: ./vehicle-lambda
         run: npm install
       - name: Build Lambda function
-        working-directory: ./lambda
+        working-directory: ./vehicle-lambda
         run: npm run build
       - name: Upload Lambda bundle
         uses: actions/upload-artifact@v4
         with:
           name: lambda-dist
           path: terraform/dist/index.js
+      - name: Install Emergency Lambda dependencies
+        working-directory: ./emergency-lambda
+        run: npm install
+      - name: Build Emergency Lambda function
+        working-directory: ./emergency-lambda
+        run: npm run build
+      - name: Upload Emergency Lambda bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-dist
+          path: terraform/dist/emergency-lambda.js
+
   deploy:
     needs: lambda-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Download Lambda bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: lambda-dist
+          path: terraform/dist
+      - name: Download Emergency Lambda bundle
         uses: actions/download-artifact@v4
         with:
           name: lambda-dist

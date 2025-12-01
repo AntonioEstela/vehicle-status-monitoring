@@ -1,0 +1,20 @@
+{
+  "name": "emergency-vehicle-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild index.js --bundle --minify --platform=node --target=node22 --outfile=../terraform/dist/emergency-lambda.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antonio Estela",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AntonioEstela/vehicle-status-monitoring/issues"
+  },
+  "homepage": "https://github.com/AntonioEstela/vehicle-status-monitoring#readme",
+  "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
+    "esbuild": "^0.27.0"
+  }
+}
