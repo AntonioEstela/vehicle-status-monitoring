@@ -97,7 +97,8 @@ resource "aws_api_gateway_method_settings" "all_methods" {
   method_path = "*/*"
 
   settings {
-    throttling_rate_limit = 15
+    throttling_rate_limit  = 15
+    throttling_burst_limit = 2000
   }
 
 }
