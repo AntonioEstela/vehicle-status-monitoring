@@ -40,6 +40,24 @@ resource "aws_iam_role_policy" "lambda_ses_send" {
   })
 }
 
+resource "aws_iam_role_policy" "lambda_sns_publish" {
+  name = "lambda-sns-publish"
+  role = aws_iam_role.lambda_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "sns:Publish"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
 resource "aws_lambda_function" "vehicle_status" {
   function_name    = "vehicle_status_function"
   handler          = "index.handler"
@@ -94,3 +112,4 @@ resource "aws_lambda_permission" "sns_invoke" {
   principal     = "sns.amazonaws.com"
   source_arn    = aws_sns_topic.vehicle_emergencies.arn
 }
+
