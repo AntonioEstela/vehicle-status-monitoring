@@ -43,7 +43,7 @@ resource "aws_iam_role_policy" "lambda_ses_send" {
 resource "aws_lambda_function" "vehicle_status" {
   function_name    = "vehicle_status_function"
   handler          = "index.handler"
-  runtime          = "nodejs20.x"
+  runtime          = "nodejs22.x"
   role             = aws_iam_role.lambda_role.arn
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
