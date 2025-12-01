@@ -3,14 +3,23 @@ const sesClient = new SESClient({ region: 'sa-east-1' });
 
 export const handler = async (event) => {
   console.log('Evento recibido:', event);
-  const eventParsed = typeof event?.body === 'string' ? JSON.parse(event.body || '{}') : event?.body || {};
+  const snsRecord = event.Records[0].Sns;
+  const messageStr = snsRecord.Message;
+  const message = JSON.parse(messageStr);
 
-  const { vehicle_plate, coordinates } = eventParsed;
+  const { type, vehicle_plate, coordinates } = message;
 
-  if (!vehicle_plate || !coordinates) {
+  if (!type || !vehicle_plate || !coordinates) {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'Invalid request' }),
+    };
+  }
+
+  if (type !== 'Emergency') {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: 'Not an emergency' }),
     };
   }
 
