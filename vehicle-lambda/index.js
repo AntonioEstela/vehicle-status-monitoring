@@ -1,4 +1,4 @@
-import { SNSClient, PublishCommand, SNS } from '@aws-sdk/client-sns';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 
 const sns = new SNSClient({ region: 'sa-east-1' });
 const SNS_ARN = 'arn:aws:sns:sa-east-1:730335330651:vehicle-emergencies'; // Can be moved to env variable

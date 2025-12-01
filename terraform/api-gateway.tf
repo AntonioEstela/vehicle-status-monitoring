@@ -22,9 +22,12 @@ resource "aws_api_gateway_integration" "vehicle_lambda" {
   rest_api_id             = aws_api_gateway_rest_api.vehicle_api.id
   resource_id             = aws_api_gateway_resource.vehicle.id
   http_method             = aws_api_gateway_method.vehicle_post.http_method
-  type                    = "AWS_PROXY"
+  type                    = "AWS"
   integration_http_method = "POST"
   uri                     = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.vehicle_status.arn}/invocations"
+  request_templates = {
+    "application/json" = "$input.body"
+  }
 }
 
 resource "aws_api_gateway_resource" "health" {
