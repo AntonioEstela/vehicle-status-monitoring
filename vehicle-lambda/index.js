@@ -1,10 +1,10 @@
-/* import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 
 const sns = new SNSClient({ region: 'sa-east-1' });
-const SNS_ARN = 'arn:aws:sns:sa-east-1:730335330651:vehicle-emergencies'; */
+const SNS_ARN = 'arn:aws:sns:sa-east-1:730335330651:vehicle-emergencies'; // Can be moved to env variable
 
 export const handler = async (event) => {
-  /* const eventParsed = typeof event?.body === 'string' ? JSON.parse(event.body || '{}') : event?.body || {};
+  const eventParsed = typeof event?.body === 'string' ? JSON.parse(event.body || '{}') : event?.body || {};
 
   const { type, vehicle_plate, coordinates } = eventParsed;
 
@@ -23,7 +23,7 @@ export const handler = async (event) => {
       })
     );
   }
- */
+
   return {
     statusCode: 200,
     body: JSON.stringify({ message: 'Processed' }),
